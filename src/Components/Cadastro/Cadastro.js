@@ -28,8 +28,8 @@ export default function Cadastro(props) {
           placeholder="Confirme a senha"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button>
-          <p> Entrar</p>
+        <button type="submit" >
+          <p> Cadastrar</p>
         </button>
       </form>
       <Link to="/">

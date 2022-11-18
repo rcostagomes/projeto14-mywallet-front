@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "../Login/Login";
 import { useState } from "react";
 import Cadastro from "../Cadastro/Cadastro";
+import Extrato from "../Extrato/Extrato";
 
 export default function App() {
   const [email, setEmail] = useState();
@@ -25,6 +26,7 @@ export default function App() {
             }
           />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/Extrato" element={<Extrato />} />
         </Routes>
       </BrowserRouter>
     </>

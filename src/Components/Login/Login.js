@@ -18,7 +18,7 @@ export default function Login(props) {
           placeholder="senha"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button>
+        <button type="submit">
           <p> Entrar</p>
         </button>
       </form>
