@@ -1,8 +1,29 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/MyWallet.png";
 export default function Login(props) {
-  const { setEmail, setPassword } = props;
+  const { email, setUser, user, password, setEmail, setPassword, setToken } =
+    props;
+  const navigate = useNavigate();
+  function conect(event) {
+    event.preventDefault();
+    const promise = axios.post(`http://localhost:5000/singIn`, {
+      email: `${email}`,
+      password: `${password}`,
+    });
+    promise.then((response) => {
+      setToken(response.data);
+      changeScreen(response);
+    });
+    promise.catch(() => {
+      alert("Login ou senha inválidos");
+    });
+  }
+  function changeScreen(response) {
+    navigate("/Extrato");
+  }
+
   return (
     <Main>
       <Title src={Logo} />
@@ -18,7 +39,7 @@ export default function Login(props) {
           placeholder="senha"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">
+        <button type="submit" onClick={conect}>
           <p> Entrar</p>
         </button>
       </form>

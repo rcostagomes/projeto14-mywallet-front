@@ -1,5 +1,37 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-export default function Entrada() {
+export default function Entrada(props) {
+  const { token } = props;
+
+  const [value, setValue] = useState("");
+  const [description, setDescription] = useState("");
+
+  const navigate = useNavigate();
+
+  function newDeposit(event) {
+    const headers = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    event.preventDefault();
+
+    axios
+      .post(
+        `http://localhost:5000/transaction`,
+        {
+          description: description,
+          type: "entrada",
+          value: parseFloat(value),
+        },
+        headers
+      )
+      .then((res) => {
+        alert("Entrada Registrada com sucesso !!");
+        navigate("/Extrato");
+      });
+  }
+
   return (
     <Main>
       <Navbar>
@@ -7,9 +39,19 @@ export default function Entrada() {
       </Navbar>
 
       <form>
-        <input placeholder="Valor"></input>
-        <input placeholder="Descrição"></input>
-        <button>
+        <input
+          type="number"
+          placeholder="Valor"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <button type="submit" onClick={newDeposit}>
           <h3> Salvar entrada </h3>
         </button>
       </form>

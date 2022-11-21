@@ -1,6 +1,55 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Sair from "../../assets/Vector.png";
-export default function Extrato() {
+export default function Extrato(props) {
+  const [transactions, setTransactions] = useState([]);
+  const navigate = useNavigate();
+
+  const { token } = props;
+  console.log(token);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    axios
+      .get(`http://localhost:5000/transaction`, config)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  function deposits() {
+    navigate("/Entrada");
+  }
+  function payment() {
+    navigate("/Saida");
+  }
+
+  function userBalance() {
+    if (transactions.length > 0) {
+      return transactions.reduce((previous, current) => {
+        if (current.type === "entrada") {
+          return previous + current.value;
+        }
+
+        return previous - current.value;
+      }, 0);
+    } else {
+      return 0;
+    }
+  }
+
+  const saldo = userBalance();
+
   return (
     <Main>
       <Navbar>
@@ -8,15 +57,27 @@ export default function Extrato() {
         <img src={Sair} alt="Sair" />
       </Navbar>
 
-      <Infos></Infos>
+      <Infos>
+        {transactions.length > 0 ? (
+          <p style={{ color: "gray", fontSize: 12 }}>
+            Minhas transacoes
+            <p>{}</p>s
+          </p>
+        ) : (
+          <span style={{ color: "gray", fontSize: 12 }}>
+            não há registros de entrada e saída
+          </span>
+        )}
+        <h4>Saldo: {saldo}</h4>
+      </Infos>
       <Opçoes>
-        <Entrada>
+        <Entrada onClick={deposits}>
           <ion-icon name="add-circle-outline"></ion-icon>
           <h3>
             Nova <br /> Entrada
           </h3>
         </Entrada>
-        <Saida>
+        <Saida onClick={payment}>
           <ion-icon name="remove-circle-outline"></ion-icon>
           <h3>
             Nova <br /> Saida
@@ -69,6 +130,7 @@ const Opçoes = styled.div`
   }
 `;
 const Entrada = styled.div`
+  cursor: pointer;
   width: 155px;
   height: 114px;
   background-color: #a328d6;
@@ -82,6 +144,7 @@ const Entrada = styled.div`
   }
 `;
 const Saida = styled.div`
+  cursor: pointer;
   width: 155px;
   height: 114px;
   margin-top: 5px;

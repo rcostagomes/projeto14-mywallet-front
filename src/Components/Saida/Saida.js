@@ -1,5 +1,35 @@
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-export default function Saida() {
+
+export default function Saida(props) {
+  const { token } = props;
+  const navigate = useNavigate();
+  const [value, setValue] = useState("");
+  const [description, setDescription] = useState("");
+
+  function newPayment(event) {
+    const headers = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    event.preventDefault();
+
+    axios
+      .post(
+        `http://localhost:5000/transaction`,
+        {
+          description: description,
+          type: "saida",
+          value: parseFloat(value),
+        },
+        headers
+      )
+      .then((res) => {
+        alert("Entrada Registrada com sucesso !!");
+        navigate("/Extrato");
+      });
+  }
   return (
     <Main>
       <Navbar>
@@ -7,9 +37,19 @@ export default function Saida() {
       </Navbar>
 
       <form>
-        <input placeholder="Valor"></input>
-        <input placeholder="Descrição"></input>
-        <button>
+        <input
+          type="number"
+          placeholder="Valor"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <button type="submit" onClick={newPayment}>
           <h3> Salvar Saida</h3>
         </button>
       </form>
@@ -53,4 +93,3 @@ const Navbar = styled.div`
     color: #ffff;
   }
 `;
-

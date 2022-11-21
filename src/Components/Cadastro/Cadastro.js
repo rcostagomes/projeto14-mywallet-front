@@ -15,27 +15,26 @@ export default function Cadastro(props) {
     setPasswordC,
   } = props;
 
-  function cadaster(event){
+  function cadaster(event) {
     event.preventDefault();
-const promise = axios.post(`http://localhost:5000/singUp`,{
-	email: `${email}`,
-	name: `${name}` ,
-	password: `${password}`
-});
-promise.then((response)=>{cadastrou(response)})
-promise.catch((err)=> alert("Preencha os campos corretamente"), )
+    if (password === passwordC) {
+      const promise = axios.post(`http://localhost:5000/singUp`, {
+        email: `${email}`,
+        name: `${name}`,
+        password: `${password}`,
+      });
+      promise.then((response) => {
+        conclude(response);
+      });
+      promise.catch((err) => console.log(err));
+    } else {
+      alert("Digite a mesma senha em ambos os campos de senha");
+    }
+  }
 
-console.log(email)
-console.log(password)
-console.log(name)
-console.log(passwordC)
-}
-
-function cadastrou(response){
-    console.log(response)
-    navigate("/")
-
-}
+  function conclude(response) {
+    navigate("/");
+  }
   return (
     <Main>
       <Title src={Logo} />
