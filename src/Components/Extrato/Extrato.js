@@ -11,11 +11,13 @@ export default function Extrato() {
       <Infos></Infos>
       <Opçoes>
         <Entrada>
+          <ion-icon name="add-circle-outline"></ion-icon>
           <h3>
             Nova <br /> Entrada
           </h3>
         </Entrada>
         <Saida>
+          <ion-icon name="remove-circle-outline"></ion-icon>
           <h3>
             Nova <br /> Saida
           </h3>
@@ -60,6 +62,11 @@ const Infos = styled.div`
 
 const Opçoes = styled.div`
   display: flex;
+  ion-icon {
+    font-size: 25px;
+    margin-top: 5px;
+    margin-left: 5px;
+  }
 `;
 const Entrada = styled.div`
   width: 155px;
@@ -71,7 +78,7 @@ const Entrada = styled.div`
   color: #ffff;
   h3 {
     margin-left: 10px;
-    margin-top: 60px;
+    margin-top: 40px;
   }
 `;
 const Saida = styled.div`
@@ -83,6 +90,6 @@ const Saida = styled.div`
   color: #ffff;
   h3 {
     margin-left: 10px;
-    margin-top: 60px;
+    margin-top: 40px;
   }
 `;

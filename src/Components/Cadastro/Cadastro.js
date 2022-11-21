@@ -1,8 +1,41 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/MyWallet.png";
 export default function Cadastro(props) {
-  const { setEmail, setPassword, setNome } = props;
+  const navigate = useNavigate();
+  const {
+    name,
+    email,
+    password,
+    passwordC,
+    setEmail,
+    setPassword,
+    setName,
+    setPasswordC,
+  } = props;
+
+  function cadaster(event){
+    event.preventDefault();
+const promise = axios.post(`http://localhost:5000/singUp`,{
+	email: `${email}`,
+	name: `${name}` ,
+	password: `${password}`
+});
+promise.then((response)=>{cadastrou(response)})
+promise.catch((err)=> alert("Preencha os campos corretamente"), )
+
+console.log(email)
+console.log(password)
+console.log(name)
+console.log(passwordC)
+}
+
+function cadastrou(response){
+    console.log(response)
+    navigate("/")
+
+}
   return (
     <Main>
       <Title src={Logo} />
@@ -10,7 +43,7 @@ export default function Cadastro(props) {
         <input
           type="text"
           placeholder="name"
-          onChange={(e) => setNome(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
         />
         <input
           type="email"
@@ -26,9 +59,9 @@ export default function Cadastro(props) {
         <input
           type="password"
           placeholder="Confirme a senha"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPasswordC(e.target.value)}
         />
-        <button type="submit" >
+        <button type="submit" onClick={cadaster}>
           <p> Cadastrar</p>
         </button>
       </form>
